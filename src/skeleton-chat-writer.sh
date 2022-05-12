@@ -9,9 +9,15 @@ CONF_FILE_PATH="$1"
 # Cold parameters
 USER_ALIAS="Ghost"
 MESSAGE_FILE="/tmp/.sklc"
+DTA_DIR='data'
 GETS_TO_CLEANUP=0
 MSG_FILE_GROUPS='pi'
-MSG_FILE_PERMS=777
+MSG_FILE_PERMS=770
+SESSION_FILE="${DTA_DIR}/.sklc-session"
+
+if [ -f "${CONF_FILE_PATH}" ]; then
+	source "$CONF_FILE_PATH"
+fi
 
 function cleanup() { 
 	rm -f "${MESSAGE_FILE}"
@@ -105,6 +111,7 @@ function skeleton_emitter() {
 		if [ -z "${MESSAGE}" ]; then
 			continue
 		elif [[ "${SANITIZED_MSG}" == '.exit' || "${SANITIZED_MSG}" == '.back' ]]; then
+			tmux kill-session -t `cat ${SESSION_FILE}` &> /dev/null
 			break
 		fi
 		issue_message "${MESSAGE}"
@@ -116,10 +123,6 @@ function skeleton_emitter() {
 }
 
 # MISCELLANEOUS
-
-if [ -f "${CONF_FILE_PATH}" ]; then
-	source "$CONF_FILE_PATH"
-fi
 
 preconditions
 skeleton_emitter

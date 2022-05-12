@@ -10,13 +10,18 @@ CONF_FILE_PATH="$1"
 SESSION="Skeleton-${RANDOM}"
 SCRIPT_DIR='src'
 DOX_DIR='dox'
+DTA_DIR='data'
 WRITER_SCRIPT="${SCRIPT_DIR}/skeleton-chat-writer.sh"
 READER_SCRIPT="${SCRIPT_DIR}/skeleton-chat-reader.sh"
 DOX_SCRIPT="${DOX_DIR}/skeleton-chat.dox"
+SESSION_FILE="${DTA_DIR}/.sklc-session"
 
 if [ -f "$CONF_FILE_PATH" ]; then
 	source "$CONF_FILE_PATH"
 fi
+
+# setting active session name
+echo "${SESSION}" > "${SESSION_FILE}"
 
 # set up tmux
 tmux start-server
@@ -33,13 +38,15 @@ tmux splitw -v -p 15
 tmux send-keys "clear; ${WRITER_SCRIPT} ${CONF_FILE_PATH}" C-m
 
 # create a new window called Dox
-tmux new-window -t $SESSION:1 -n Dox
-tmux select-window -t $SESSION:1
+tmux new-window -t ${SESSION}:1 -n Dox
+tmux select-window -t ${SESSION}:1
 tmux send-keys "clear; $DOX_SCRIPT" C-m
 
 # return to main window
-tmux select-window -t $SESSION:0
+tmux select-window -t ${SESSION}:0
 
 # Locked(n)Loaded! Attach to the tmux session
-tmux attach-sessio -t $SESSION
+tmux attach-session -t ${SESSION}
 
+# Cleanup session
+tmux kill-session -t ${SESSION}

@@ -36,7 +36,12 @@ ________________________________________________________________________________
 	# Set running parameters
 	$ vim conf/skeleton-chat.conf
 	...
-
+	USER_ALIAS="Ghost"
+	SESSION="SkeletonChat-${RANDOM}"
+	MESSAGE_FILE="/tmp/.sklc"
+	GETS_TO_CLEANUP=0
+	MSG_FILE_GROUPS='pi'
+	MSG_FILE_PERMS=770
 	...
 	
 	# Create/join chat room (hardcoded bby - hey, 2h man)
@@ -47,9 +52,7 @@ ________________________________________________________________________________
 	file system. 
 
 [ WARNINGS ]: Try not to execute skeleton-chat-init or skeleton-chat-tmux if you 
-	already are in a tmux session - nest with caution. Also, should probably
-	mention that the skeleton writer commands '.exit' and '.back' do not 
-	terminate de tmux session. You could always use (Ctrl-b :kill-session)
+	already are in a tmux session - nest with caution.
 ________________________________________________________________________________
 
 EOF

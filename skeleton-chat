@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 #
 # Regards, the Alveare Solutions #!/Society -x
 #
@@ -7,6 +7,10 @@ declare -a APT_DEPENDENCIES
 
 CURRENT_DIR="`pwd`"
 CONF_FILE_PATH="${CURRENT_DIR}/conf/skeleton-chat.conf"
+
+if [ -f "$1" ]; then
+	CONF_FILE_PATH="$1"
+fi
 
 if [ -f "${CONF_FILE_PATH}" ]; then
 	source $CONF_FILE_PATH
