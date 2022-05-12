@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Regards, the Alveare Solutions #!/Society -x
+#
+
+declare -a APT_DEPENDENCIES
+
+CURRENT_DIR="`pwd`"
+CONF_FILE_PATH="${CURRENT_DIR}/conf/skeleton-chat.conf"
+
+if [ -f "${CONF_FILE_PATH}" ]; then
+	source $CONF_FILE_PATH
+else
+	echo "[ WARNING ]: Config file not found! ($CONF_FILE_PATH)"
+	exit 1
+fi
+
+function install_dependencies() {
+	local FAILURES=0
+	for util in ${APT_DEPENDENCIES[@]}; do
+		echo "[ INFO ]: Installing $util..."
+		apt-get install "${util}" -y
+		if [ $? -ne 0 ]; then
+			local FAILURES=$((FAILURES + 1))
+			echo "[ NOK ]: Could not install! ($util) "
+			continue
+		fi
+		echo "[ OK ]: Installed! ($util)"
+	done
+	if [ $FAILURES -ne 0 ]; then
+		echo "[ WARNING ]: $FAILURES dependencies could not be installed!"
+		echo "[ INFO ]: Try adding the packages manually ^^"
+	fi
+	return $FAILURES
+}
+
+if [[ "$1" == '--setup' || "$1" == '-S' ]]; then
+	if [ $EUID -ne 0 ]; then
+		echo "[ WARNING ]: Setup requires super user privileges. Are you root?"
+		exit 1
+	fi
+	install_dependencies
+	exit $?
+fi
+
+${CURRENT_DIR}/${SC_SESSION} "${CONF_FILE_PATH}"
+exit $?

@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Regards, the Alveare Solutions #!/Society -x
+#
+
+cat <<EOF
+________________________________________________________________________________
+
+			      Skeleton Chat DOX
+________________________________________________________________________________
+
+[ DESCRIPTION ]: Skeleton Chat is a minimalist instant messaging application 
+	created during a 2h hackaton. It uses the file system and several basic
+	unix tools (tmux, tail, echo, etc...) to create a efficient and semi-secure
+	(depending on how the environment is set up) way of communication on an 
+	internal network. 
+
+[ DETAILS ]: Users can choose any alias they want, multiple users with the same 
+	alias are allowed and there are no timestamps saved anywhere. 
+	The conversation is saved to a file that all users of a certain group have 
+	read/write access to, and the file is monitored in a tmux pane.
+	(Terminal multiplexer awesomeness!!)
+
+	If the message file does not already exist on the filesystem at the time 
+	skeleton-chat-writer.sh script is executed, then this session will be
+	responsible for the file cleanup. When this user types '.exit' or '.back'
+	into the chat, his writer session will be terminated and the file removed.
+
+	If the other participants to the conversation remain in the room, the first
+	person who writes a message after the chat initiator leaves the room 
+	becomes responsible of cleaning up the message file, and so on untill all
+	clients leave the room.
+
+[ USAGE ]: 
+
+	# Set running parameters
+	$ vim conf/skeleton-chat.conf
+	...
+
+	...
+	
+	# Create/join chat room (hardcoded bby - hey, 2h man)
+	$ ./skeleton-chat-init	
+
+[ NOTES ]: Typing '.exit' or '.back' to STDIN when the skeleton-chat-writer.sh script
+	is running, will terminate the session, and - if it is the case, cleanup the 
+	file system. 
+
+[ WARNINGS ]: Try not to execute skeleton-chat-init or skeleton-chat-tmux if you 
+	already are in a tmux session - nest with caution. Also, should probably
+	mention that the skeleton writer commands '.exit' and '.back' do not 
+	terminate de tmux session. You could always use (Ctrl-b :kill-session)
+________________________________________________________________________________
+
+EOF
