@@ -79,7 +79,7 @@ function set_alias() {
 			echo "[ WARNING ]: Invalid answer (${ANSWER})"
 			continue
 		fi
-		USER_ALIAS="${NEW_ALIAS}"
+		USER_ALIAS="`echo ${NEW_ALIAS} | tr ':' ' '`"
 		break
 	done
 	return 0
