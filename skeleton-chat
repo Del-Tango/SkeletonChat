@@ -43,6 +43,16 @@ if [[ "$1" == '--setup' || "$1" == '-S' ]]; then
 		echo "[ WARNING ]: Setup requires super user privileges. Are you root?"
 		exit 1
 	fi
+	echo "[ SETUP ]: Creating tool alias... (skeletonchat)"
+	echo "alias skeletonchat='cd ${CURRENT_DIR} && $0 && cd - &> /dev/null'" >> "${BASH_ALIASES}" 
+
+	if [ $? -ne 0 ]; then
+		echo "[ NOK ]: Could not create alias!"
+	else
+		echo "[ OK ]: Successfully created alias!"
+	fi			
+
+	echo "[ SETUP ]: Installing dependencies..."
 	install_dependencies
 	exit $?
 fi

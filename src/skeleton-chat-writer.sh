@@ -111,7 +111,6 @@ function skeleton_emitter() {
 		if [ -z "${MESSAGE}" ]; then
 			continue
 		elif [[ "${SANITIZED_MSG}" == '.exit' || "${SANITIZED_MSG}" == '.back' ]]; then
-			tmux kill-session -t `cat ${SESSION_FILE}` &> /dev/null
 			break
 		fi
 		issue_message "${MESSAGE}"
@@ -137,5 +136,8 @@ if [ ${GETS_TO_CLEANUP} -eq 1 ]; then
 fi
 
 echo "[ DONE ]: Terminating!"
+sleep 0.2
+tmux kill-session -t `cat ${SESSION_FILE}` &> /dev/null
+
 exit $EXIT_CODE
 
